@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>Complete Topics</title>
+</head>
+<body>
+    <button id ="back-button" class = "button">back</button>
+    <ul id ="list"></ul>
+    <script>
+        fetch("http://127.0.0.1:8000/topics").then(res => res.json())
+        .then(data => {
+            const list = document.getElementById("list")
+            data.forEach(topic =>{
+                const li = document.createElement("li")
+                li.innerText = topic.name + " - " + topic.next_review_date
+                list.appendChild(li)
+            })
+        })
+        const backButton = document.getElementById("back-button")
+        backButton.onclick = () => {
+            window.location.href = "index.html"
+        }
+    </script>
+</body>
+</html>

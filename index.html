@@ -3,8 +3,8 @@
     <title>Review  Master</title>
 </head>
 <body> 
-    <button class = "button">Add Topic</button> 
-    <button class ="button">Full Topics</button>
+    <button id = "topic-button" class = "button">Add Topic</button> 
+    <button id = "full-topic" class ="button">Full Topics</button>
     <h1>Today's Topics</h1>
     <ul id ="list"></ul> 
     <dialog id = "my panel">
@@ -78,6 +78,17 @@
                 currentLi.remove()
                 dialog.close()
             })
+        }
+        const topicButton = document.getElementById("topic-button")
+        topicButton.onclick = () => {
+            const name = prompt("Enter your topic name: ") 
+            if (name){
+                fetch("http://127.0.0.1:8000/add-topic?name="  + name, {method: "POST"})
+            }
+        }
+        const fullTopic = document.getElementById("full-topic")
+        fullTopic.onclick = () => {
+            window.location.href = "topics.html"
         }
     </script>
 </body>
