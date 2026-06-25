@@ -1,23 +1,31 @@
 <html> 
 <head> 
     <title>Review  Master</title>
+    <link rel="stylesheet" href ="style.css">
 </head>
 <body> 
     <button id = "topic-button" class = "button">Add Topic</button> 
     <button id = "full-topic" class ="button">Full Topics</button>
+    <div id ="add-topic-form" style="display:none">
+        <input id="topic-input" type="text" placeholder="Enter topic name">
+        <button id="submit-topic" class="button">Add</button>
+        <button id ="cancel-topic" class="button">cancel</button>
+    </div>
     <h1>Today's Topics</h1>
-    <ul id ="list"></ul> 
-    <dialog id = "my panel">
-        <button id ="close-button" class = "close-btn">❌</button>
+    <ul id="list"></ul>
+    <dialog id = "mypanel">
+        <button id ="close-button" class = "button close-btn">x</button>
         <h1 id ="panel-topic-name"></h1>
-        <button id = "btn-5" class = "button">5</button>
-        <button id = "btn-4" class = "button">4</button>
-        <button id = "btn-3" class = "button">3</button>
-        <button id = "btn-2" class = "button">2</button>
-        <button id = "btn-1" class = "button">1</button>
+        <div id ="rating-buttons">
+            <button id = "btn-5" class = "button">5</button>
+            <button id = "btn-4" class = "button">4</button>
+            <button id = "btn-3" class = "button">3</button>
+            <button id = "btn-2" class = "button">2</button>
+            <button id = "btn-1" class = "button">1</button>
+        </div>
     </dialog>
     <script>
-        const dialog = document.getElementById("my panel")
+        const dialog = document.getElementById("mypanel")
         let currentTopicId = null
         let currentLi = null
         fetch("http://127.0.0.1:8000/topics").then(res => res.json()).then(data => {const due = data.filter(topic => topic.next_review_date <= new Date().toISOString().split("T")[0])
@@ -81,10 +89,22 @@
         }
         const topicButton = document.getElementById("topic-button")
         topicButton.onclick = () => {
-            const name = prompt("Enter your topic name: ") 
+            document.getElementById("add-topic-form").style.display = "block"
+        }
+
+        const submitTopic = document.getElementById("submit-topic")
+        submitTopic.onclick = () => {
+            const name = document.getElementById("topic-input").value
             if (name){
-                fetch("http://127.0.0.1:8000/add-topic?name="  + name, {method: "POST"})
+                fetch("http://127.0.0.1:8000/add-topic?name=" + name, {method: "POST"})
+                document.getElementById("add-topic-form").style.display = "none"
+                document.getElementById("topic-input").value = ""
             }
+        }
+        const cancelTopic = document.getElementById("cancel-topic")
+        cancelTopic.onclick = () => {
+            document.getElementById("add-topic-form").style.display = "none"
+            document.getElementById("topic-input").value = ""
         }
         const fullTopic = document.getElementById("full-topic")
         fullTopic.onclick = () => {

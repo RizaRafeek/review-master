@@ -1,6 +1,8 @@
 <html>
 <head>
     <title>Complete Topics</title>
+    <meta charset ="UTF-8">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <button id ="back-button" class = "button">back</button>
@@ -11,7 +13,14 @@
             const list = document.getElementById("list")
             data.forEach(topic =>{
                 const li = document.createElement("li")
-                li.innerText = topic.name + " - " + topic.next_review_date
+                const parts = topic.next_review_date.split("-")
+                const formatted = parts[2] + "-" + parts[1] + "-" + parts[0]
+                const nameSpan = document.createElement("span")
+                nameSpan.innerText = topic.name
+                const dateSpan = document.createElement("span")
+                dateSpan.innerText = formatted
+                li.appendChild(nameSpan)
+                li.appendChild(dateSpan)
                 list.appendChild(li)
             })
         })

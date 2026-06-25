@@ -2,6 +2,14 @@ from fastapi import FastAPI
 from topic import TopicBasics
 from database import add_topic, get_all_topics, update_topic, delete_topic, get_this_topic
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():
