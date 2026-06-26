@@ -1,121 +1,100 @@
-Review Master — Project Documentation
-Overview
-Review Master is a spaced repetition study scheduler. Users add lecture topics or chapters, and the system automatically schedules when to review them based on recall quality using the SM-2 algorithm.
+# Review Master
 
-Stack
-Layer → Technology
-Algorithm → Python (SM-2)
+A spaced repetition study scheduler built with Python and FastAPI. Users add lecture topics, and the system schedules reviews using the SM-2 algorithm based on recall quality.
 
-Backend → FastAPI
+🔗 **Live:** https://review-master-1.onrender.com/index.html
 
-Database → Supabase (PostgreSQL)
+---
 
-Frontend → HTML, CSS, JavaScript
+## Stack
 
-Hosting → Render (backend + frontend)
+| Layer | Technology |
+|---|---|
+| Algorithm | Python (SM-2) |
+| Backend | FastAPI |
+| Database | Supabase (PostgreSQL) |
+| Frontend | HTML, CSS, JavaScript |
+| Hosting | Render |
 
-Repository
-GitHub: github.com/RizaRafeek/review-master
+---
 
-Live: https://review-master-1.onrender.com/index.html
+## How It Works
 
-Project Structure
-review-master/
+1. User adds a topic via the frontend
+2. Topic is saved to Supabase with `next_review_date` set to today
+3. Each day, the home page shows topics due for review
+4. User clicks a topic and rates recall from 1 to 5
+5. SM-2 algorithm calculates the next review date based on the rating
+6. Topic is updated in the database and removed from today's list
 
-├── main.py          — FastAPI app and endpoints
+---
 
-├── database.py      — Supabase CRUD operations
+## SM-2 Algorithm
 
-├── topic.py         — SM-2 algorithm
+Adjusts two values per topic:
 
-├── index.html       — Home page (today's due topics)
+- **Easiness Factor (EF)** — how easy the topic is (default 2.5)
+- **Interval** — days until next review
 
-├── topics.html      — Full topics list
-
-├── style.css        — Deep space theme
-
-├── requirements.txt — Python dependencies
-
-└── .env             — Environment variables (not committed)
-
-How It Works
-
-User adds a topic via the frontend
-Topic is saved to Supabase with next_review_date set to today
-Each day, the home page shows topics due for review
-User clicks a topic and rates recall from 1 to 5
-SM-2 algorithm calculates the next review date based on the rating
-Topic is updated in the database and removed from today's list
-
-
-SM-2 Algorithm
-The SM-2 algorithm adjusts two values per topic:
-Easiness Factor (EF) — how easy the topic is (default 2.5)
-
-Interval — days until next review
 Rules:
+- Rating ≥ 3 → interval increases
+- Rating < 3 → interval resets to 1, review again tomorrow
+- Minimum EF is 1.3
 
-Rating ≥ 3 → interval increases, EF stays or improves
-Rating < 3 → interval resets to 1, review again tomorrow
-Minimum EF is 1.3
+---
 
+## API Endpoints
 
-API Endpoints
-GET     /topics              — Get all topics
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/topics` | Get all topics |
+| GET | `/topics/{id}` | Get a single topic |
+| POST | `/add-topic?name=` | Add a new topic |
+| GET | `/review?id=&quality=` | Submit a review rating |
+| DELETE | `/delete-topic?id=` | Delete a topic |
 
-GET     /topics/{id}         — Get a single topic
+---
 
-POST    /add-topic?name=     — Add a new topic
+## Database Schema
 
-GET     /review?id=&quality= — Submit a review rating
+| Column | Type | Description |
+|---|---|---|
+| id | uuid | Primary key |
+| name | text | Topic name |
+| easiness_factor | float | SM-2 EF value |
+| interval | int | Days until next review |
+| repetitions | int | Successful review count |
+| next_review_date | date | Date of next review |
 
-DELETE  /delete-topic?id=    — Delete a topic
+---
 
-Database Schema
-Table: topics
-id               — uuid    — Primary key
+## Local Development
 
-name             — text    — Topic name
-
-easiness_factor  — float   — SM-2 EF value
-
-interval         — int     — Days until next review
-
-repetitions      — int     — Number of successful reviews
-
-next_review_date — date    — Date of next review
-
-Environment Variables
-Set in Render dashboard and never committed to GitHub:
-SUPABASE_URL=your_supabase_project_url
-
-SUPABASE_KEY=your_supabase_key
-
-Local Development
-Terminal 1 — backend:
-
+```bash
+# Terminal 1 — backend
 uvicorn main:app --reload
-Terminal 2 — frontend:
 
+# Terminal 2 — frontend
 python -m http.server 3000
-Open: http://localhost:3000/index.html
-CORS in main.py allows localhost:3000 and the Render frontend URL.
+```
 
-Deployment
-Both services hosted on Render.
-Backend → Render Web Service
+Open `http://localhost:3000/index.html`
 
-Start command: uvicorn main:app --host 0.0.0.0 --port 10000
-Frontend → Render Static Site
+---
 
-Publish directory: .
-Environment variables are managed via Render dashboard and never committed to GitHub.
+## Deployment
 
-Dependencies
+- **Backend** → Render Web Service
+- **Frontend** → Render Static Site
+- Environment variables managed via Render dashboard, never committed to GitHub
+
+---
+
+## Dependencies
+
+```
 fastapi
-
 uvicorn
-
 supabase
-
 python-dotenv
+```
