@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "https://review-master-1.onrender.com"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
