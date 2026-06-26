@@ -8,7 +8,7 @@
     <button id ="back-button" class = "button">back</button>
     <ul id ="list"></ul>
     <script>
-        fetch("http://127.0.0.1:8000/topics").then(res => res.json())
+        fetch("https://review-master-xjlh.onrender.com/topics").then(res => res.json())
         .then(data => {
             const list = document.getElementById("list")
             data.forEach(topic =>{

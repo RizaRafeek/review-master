@@ -28,7 +28,7 @@
         const dialog = document.getElementById("mypanel")
         let currentTopicId = null
         let currentLi = null
-        fetch("http://127.0.0.1:8000/topics").then(res => res.json()).then(data => {const due = data.filter(topic => topic.next_review_date <= new Date().toISOString().split("T")[0])
+        fetch("https://review-master-xjlh.onrender.com/topics").then(res => res.json()).then(data => {const due = data.filter(topic => topic.next_review_date <= new Date().toISOString().split("T")[0])
         const list = document.getElementById("list")
         due.forEach(topic =>{
             const li = document.createElement("li")
@@ -49,7 +49,7 @@
         }
         const btn5 = document.getElementById("btn-5")
         btn5.onclick = () => {
-            fetch("http://127.0.0.1:8000/review?id=" + currentTopicId + "&quality=5").then(res => res.json())
+            fetch("https://review-master-xjlh.onrender.com/review?id=" + currentTopicId + "&quality=5").then(res => res.json())
             .then(() => {
                 currentLi.remove()
                 dialog.close()
@@ -57,7 +57,7 @@
         }
         const btn4 = document.getElementById("btn-4")
         btn4.onclick = () => {
-            fetch("http://127.0.0.1:8000/review?id=" + currentTopicId + "&quality=4").then(res => res.json())
+            fetch("https://review-master-xjlh.onrender.com/review?id=" + currentTopicId + "&quality=4").then(res => res.json())
             .then(() => {
                 currentLi.remove()
                 dialog.close()
@@ -65,7 +65,7 @@
         }
         const btn3 = document.getElementById("btn-3")
         btn3.onclick = () => {
-            fetch("http://127.0.0.1:8000/review?id=" + currentTopicId + "&quality=3").then(res => res.json())
+            fetch("https://review-master-xjlh.onrender.com/review?id=" + currentTopicId + "&quality=3").then(res => res.json())
             .then(() => {
                 currentLi.remove()
                 dialog.close()
@@ -73,7 +73,7 @@
         }
         const btn2 = document.getElementById("btn-2")
         btn2.onclick = () => {
-            fetch("http://127.0.0.1:8000/review?id=" + currentTopicId + "&quality=2").then(res => res.json())
+            fetch("https://review-master-xjlh.onrender.com/review?id=" + currentTopicId + "&quality=2").then(res => res.json())
             .then(() => {
                 currentLi.remove()
                 dialog.close()
@@ -81,7 +81,7 @@
         }
         const btn1 = document.getElementById("btn-1")
         btn1.onclick = () => {
-            fetch("http://127.0.0.1:8000/review?id=" + currentTopicId + "&quality=1").then(res => res.json())
+            fetch("https://review-master-xjlh.onrender.com/review?id=" + currentTopicId + "&quality=1").then(res => res.json())
             .then(() => {
                 currentLi.remove()
                 dialog.close()
@@ -96,7 +96,7 @@
         submitTopic.onclick = () => {
             const name = document.getElementById("topic-input").value
             if (name){
-                fetch("http://127.0.0.1:8000/add-topic?name=" + name, {method: "POST"})
+                fetch("https://review-master-xjlh.onrender.com/add-topic?name=" + name, {method: "POST"})
                 document.getElementById("add-topic-form").style.display = "none"
                 document.getElementById("topic-input").value = ""
             }
